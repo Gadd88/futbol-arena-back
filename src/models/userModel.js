@@ -1,26 +1,44 @@
 import mongoose from "mongoose";
 import { Schema } from 'mongoose';
 
-const usersSchema = new Schema(
+const userSchema = new Schema(
     {
-        nombre: String,
-        apellido: String,
+        user_id: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        nombre: {
+            type: String,
+            required: true,
+        },
         email: {
             type: String,
             unique: true,
             required: true,
         },
+        telefono: String,
         password: {
             type: String,
             required: true,
         },
-        isAdmin: Boolean
+        isAdmin: {
+            type: Boolean,
+            default: false
+        },
+        reservas: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                default: [],
+                ref: 'reservations',
+            }
+        ],
     },
     {
         versionKey: false
     }
 );
 
-const UserModel = mongoose.model('usuarios', usersSchema)
+const UserModel = mongoose.model('users', userSchema, 'users' )
 
 export default UserModel

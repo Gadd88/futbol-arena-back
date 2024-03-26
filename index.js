@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config'
+import userRouter from './src/router/userRouter.js'
+import connectDB from './src/controllers/dbController.js';
 //Consantes
 const PORT = process.env.PORT ? process.env.PORT : 3001
 
@@ -19,16 +21,17 @@ app.use((_req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
     next()
 })
+app.use('/api', userRouter);
 
-//ruta bienvenida
-app.get('/api', (_req, res, next) => {
+const initApp = () => {
     try{
-        res.send('Hola mundo').end();
-    } catch (err){
-        console.log(err)
+        connectDB()
+        app.listen(PORT, ()=> {
+            console.log(`Server listening on http://localhost:${PORT}`)
+        })
+    }catch(error){
+        console.log(error)
     }
-})
+}
 
-app.listen(PORT, ()=> {
-    console.log(`Server listening on http://localhost:${PORT}`)
-})
+initApp()
