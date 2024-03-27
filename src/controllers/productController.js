@@ -15,7 +15,7 @@ const obtenerProductos = async (req,res) =>{
 //agregar producto
 const agregarProducto = async (req, res) => {
     try {
-        const { producto, detalle, precio, stock, imagen } = req.body
+        const { producto, detalle, precio, stock, imagen, categoria } = req.body
         const token = req.get('authorization').split(' ')[1];
         const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
         const { user_id } = decodedToken
@@ -30,6 +30,7 @@ const agregarProducto = async (req, res) => {
                 precio,
                 stock,
                 imagen,
+                categoria,
                 producto_id: crypto.randomUUID(),
             })
             await newProduct.save()
@@ -63,8 +64,8 @@ const eliminarProducto = async (req,res) => {
 //actualizar producto
 const actualizarProducto = async (req,res) => {
     try{
-        const {producto_id} = req.params
-        const {producto, detalle, precio, stock, imagen} = req.body
+        const { producto_id } = req.params
+        const { producto, detalle, precio, stock, imagen, categoria } = req.body
         const token = req.get('authorization').split(' ')[1];
         const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
         const { user_id } = decodedToken
@@ -79,7 +80,8 @@ const actualizarProducto = async (req,res) => {
                     detalle,
                     precio,
                     stock,
-                    imagen
+                    imagen,
+                    categoria
                 },
                 {new: true}
             )
