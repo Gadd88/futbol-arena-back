@@ -15,7 +15,7 @@ const obtenerProductos = async (req,res) =>{
 //agregar producto
 const agregarProducto = async (req, res) => {
     try {
-        const { producto, detalle, precio, stock } = req.body
+        const { producto, detalle, precio, stock, imagen } = req.body
         const token = req.get('authorization').split(' ')[1];
         const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
         const { user_id } = decodedToken
@@ -29,6 +29,7 @@ const agregarProducto = async (req, res) => {
                 detalle,
                 precio,
                 stock,
+                imagen,
                 producto_id: crypto.randomUUID(),
             })
             await newProduct.save()
@@ -63,7 +64,7 @@ const eliminarProducto = async (req,res) => {
 const actualizarProducto = async (req,res) => {
     try{
         const {producto_id} = req.params
-        const {producto, detalle, precio, stock} = req.body
+        const {producto, detalle, precio, stock, imagen} = req.body
         const token = req.get('authorization').split(' ')[1];
         const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
         const { user_id } = decodedToken
@@ -77,7 +78,8 @@ const actualizarProducto = async (req,res) => {
                     producto,
                     detalle,
                     precio,
-                    stock
+                    stock,
+                    imagen
                 },
                 {new: true}
             )
@@ -91,25 +93,25 @@ const actualizarProducto = async (req,res) => {
 }
 
 //vender producto
-const venderProducto = async (req,res) => {
-    const { stock, producto_id } = req.body
-    const producto = await ProductModel.findById(producto_id)
-    if(!producto){
-        res.status(404).json({message: 'No existe el producto'})
-        return
-    }
-    if(producto && producto.stock > 0){
-        producto.stock = producto.stock - stock
-        if(producto.stock >= 0){
-            producto.save()
-            res.status(200).json({message: 'Gracias por su compra'})
-        }else{
-            res.status(500).json({message: 'No existen suficientes unidades en venta'})
-        }
-    }else{
-        res.json({message: 'No existen suficientes productos en stock'})
-    }
-}
+// const venderProducto = async (req,res) => {
+//     const { stock, producto_id } = req.body
+//     const producto = await ProductModel.findById(producto_id)
+//     if(!producto){
+//         res.status(404).json({message: 'No existe el producto'})
+//         return
+//     }
+//     if(producto && producto.stock > 0){
+//         producto.stock = producto.stock - stock
+//         if(producto.stock >= 0){
+//             producto.save()
+//             res.status(200).json({message: 'Gracias por su compra'})
+//         }else{
+//             res.status(500).json({message: 'No existen suficientes unidades en venta'})
+//         }
+//     }else{
+//         res.json({message: 'No existen suficientes productos en stock'})
+//     }
+// }
 
 
 
@@ -118,6 +120,5 @@ export default {
     agregarProducto,
     eliminarProducto,
     actualizarProducto,
-    venderProducto
 }
 
