@@ -22,4 +22,6 @@ const reservasSchema = new Schema({
     user_id: String
 })
 
-const ReservasModel = mongoose.model('reservations', reservasSchema)
+const ReservasModel = mongoose.model('reservations', reservasSchema, 'reservations')
+
+export default ReservasModel

@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config'
-import userRouter from './src/router/userRouter.js'
+import router from './src/router/router.js'
 import connectDB from './src/controllers/dbController.js';
 //Consantes
 const PORT = process.env.PORT ? process.env.PORT : 3001
@@ -21,7 +21,7 @@ app.use((_req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
     next()
 })
-app.use('/api', userRouter);
+app.use('/api', router);
 
 const initApp = () => {
     try{

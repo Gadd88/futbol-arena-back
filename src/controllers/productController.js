@@ -1,13 +1,29 @@
-import ProductModel from "../models/productModel";
-import UserModel from "../models/userModel";
+import ProductModel from "../models/productModel.js";
+import UserModel from "../models/userModel.js";
+import jwt from 'jsonwebtoken'
+
+// obtener productos
+const obtenerProductos = async (req,res) =>{
+    try{
+        const productos = await ProductModel.find()
+        res.status(200).json(productos)
+    }catch(error){
+        console.log(error)
+    }
+}
 
 //agregar producto
 const agregarProducto = async (req, res) => {
     try {
-        
         const { producto, detalle, precio, stock } = req.body
-        const usuario = await UserModel.findOne({email})
-        if(usuario.isAdmin){
+        const token = req.get('authorization').split(' ')[1];
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+        const { user_id } = decodedToken
+        const usuarioDB = await UserModel.findOne({user_id})
+        if(usuarioDB.isAdmin === false){
+            res.status(400).json({message: 'No posee permisos para realizar esta acción'})
+            return
+        }else{
             const newProduct = new ProductModel({
                 producto,
                 detalle,
@@ -16,12 +32,10 @@ const agregarProducto = async (req, res) => {
                 producto_id: crypto.randomUUID(),
             })
             await newProduct.save()
-            res.status(201).json({message: 'Producto agregado correctamente'})
-        }else{
-            res.status(400).json({message: 'No posee permisos para realizar esta acción'})
+            res.status(201).json({message: 'Producto agregado correctamente', newProduct})
         }
     } catch (error) {
-        res.stataus(400).json({message: 'Ocurrió un error en la solicitud'})
+        res.status(400).json({message: 'Ocurrió un error en la solicitud'})
         console.log(error)
     }
 }
@@ -30,8 +44,16 @@ const agregarProducto = async (req, res) => {
 const eliminarProducto = async (req,res) => {
     try {
         const { producto_id } = req.params
-        const producto = await ProductModel.findByIdAndDelete(producto_id)
-        res.status(200).json({message: "Producto eliminado"}, producto)
+        const token = req.get('authorization').split(' ')[1];
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+        const { user_id } = decodedToken
+        const usuarioDB = await UserModel.findOne({user_id})
+        if(usuarioDB.isAdmin === true){
+            await ProductModel.findOneAndDelete({producto_id})
+            res.status(200).json({message: "Producto eliminado"})
+        }else{
+            res.status(400).json({message: 'No posees permisos para realizar esta acción'})
+        }
     }catch(err){
         console.log(err)
     }
@@ -42,17 +64,27 @@ const actualizarProducto = async (req,res) => {
     try{
         const {producto_id} = req.params
         const {producto, detalle, precio, stock} = req.body
-        const productUpdated = await ProductModel.findByIdAndUpdate(
-            producto_id,
-            {
-                producto,
-                detalle,
-                precio,
-                stock
-            },
-            {new: true}
-        )
-        res.status(200).json({message: 'Producto actualizado'}, productUpdated)
+        const token = req.get('authorization').split(' ')[1];
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+        const { user_id } = decodedToken
+        const usuarioDB = await UserModel.findOne({user_id})
+        if(usuarioDB.isAdmin === true){
+            const productUpdated = await ProductModel.findOneAndUpdate(
+                {
+                    producto_id: producto_id
+                },
+                {
+                    producto,
+                    detalle,
+                    precio,
+                    stock
+                },
+                {new: true}
+            )
+            res.status(200).json({message: 'Producto actualizado', productUpdated})
+        }else{
+            res.status(400).json({message: 'No posee permisos para realizar esta acción'})
+        }
     }catch(err){
         console.log(err)
     }
@@ -82,6 +114,7 @@ const venderProducto = async (req,res) => {
 
 
 export default {
+    obtenerProductos,
     agregarProducto,
     eliminarProducto,
     actualizarProducto,
