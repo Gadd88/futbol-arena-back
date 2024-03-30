@@ -19,18 +19,23 @@ const registroUsuario = async (req,res) =>{
         if(!nombre || !email || !password || !telefono){
             res.status(400).json({message: 'Todos los campos son obligatorios'})
         }
-        const pass_hash = await bcrypt.hash(password, 10)
-        const usuario = new UserModel({
-            user_id: crypto.randomUUID(),
-            nombre,
-            email,
-            password: pass_hash,
-            telefono,
-            isAdmin: false,
-            reservas: []
-        })
-        await usuario.save();
-        res.status(201).json({ message: "Usuario Registrado exitosamente", usuario });
+        const existeUsuario = await UserModel.findOne({ email:req.body.email })
+        if(existeUsuario){
+            return res.status(400).json({message:'El usuario ya se encuentra registrado'})
+        }else{
+            const pass_hash = await bcrypt.hash(password, 10)
+            const usuario = new UserModel({
+                user_id: crypto.randomUUID(),
+                nombre,
+                email,
+                password: pass_hash,
+                telefono,
+                isAdmin: false,
+                reservas: []
+            })
+            await usuario.save();
+            res.status(201).json({ message: "Usuario Registrado exitosamente", usuario });
+        }
     }catch(err){
         res.status(400).json({"message": "Error al registrar usuario"})
         console.log(err)
