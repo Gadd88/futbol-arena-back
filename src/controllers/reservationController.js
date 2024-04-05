@@ -26,6 +26,7 @@ const addReservation = async(req,res)=>{
         res.status(201).json({message: "Reserva agregada con exito"})
 
     }catch(error){
+        res.status(400).json({message: "Error al cargar la reserva"})
         console.log(error)
     }
 }

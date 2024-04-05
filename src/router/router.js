@@ -36,7 +36,7 @@ router.put('/products/:producto_id', productController.actualizarProducto)
 router.get('/reservations', reservationController.getReservations)
 
 // reservar una cancha
-router.post('./reservations', reservationController.addReservation)
+router.post('/reservations', reservationController.addReservation)
 
 // eliminar una reserva
 
