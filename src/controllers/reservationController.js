@@ -12,6 +12,25 @@ const getReservations = async (req,res) =>{
     }
 }
 
+const addReservation = async(req,res)=>{
+    try{
+        const {reservation_id,reservation_date,reservation_time,reservation_field,user_id} = req.body
+        const reservation = new reservasModel({
+            reservation_id,
+            reservation_date,
+            reservation_time,
+            reservation_field,
+            user_id,
+        })
+        await reservation.save()
+        res.status(201).json({message: "Reserva agregada con exito"})
+
+    }catch(error){
+        console.log(error)
+    }
+}
+
 export default {
     getReservations,
+    addReservation,
 }
