@@ -1,8 +1,8 @@
 import express from 'express';
 import usersControllers from '../controllers/usersControllers.js';
 import productController from '../controllers/productController.js';
-import userExtractor from '../services/userFinder.js';
 import reservationController from '../controllers/reservationController.js'
+import turnosController from '../controllers/turnosController.js';
 const router = express.Router();
 
 //obtener usuarios
@@ -42,7 +42,8 @@ router.post('/reservations', reservationController.addReservation)
 
 // editar una reserva
 
-
+//lista de turnos
+router.get('/turnos', turnosController.getTurnos )
 
 
 
