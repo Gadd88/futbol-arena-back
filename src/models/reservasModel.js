@@ -19,7 +19,14 @@ const reservasSchema = new Schema({
         required: true,
         type: String
     },
-    user_id: String
+    isAvailable:{
+        required: true,
+        type: Boolean
+    },
+    user_id: {
+        required: true,
+        type: String
+    }
 })
 
 const ReservasModel = mongoose.model('reservations', reservasSchema, 'reservations')
