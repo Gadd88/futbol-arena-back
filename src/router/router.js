@@ -3,6 +3,7 @@ import usersControllers from '../controllers/usersControllers.js';
 import productController from '../controllers/productController.js';
 import reservationController from '../controllers/reservationController.js'
 import turnosController from '../controllers/turnosController.js';
+import canchasController from '../controllers/canchasController.js';
 const router = express.Router();
 
 //obtener usuarios
@@ -44,6 +45,12 @@ router.post('/reservations', reservationController.addReservation)
 
 //lista de turnos
 router.get('/turnos', turnosController.getTurnos )
+
+//lista de canchas
+router.get('/canchas', canchasController.getCanchas)
+
+//agregar cancha
+router.post('/canchas', canchasController.addCancha)
 
 
 

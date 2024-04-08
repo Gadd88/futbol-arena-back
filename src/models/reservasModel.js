@@ -15,13 +15,12 @@ const reservasSchema = new Schema({
         required: true,
         type: String
     },
-    reservation_field: {
+    reservation_field_id: {
         required: true,
         type: String
     },
-    isAvailable:{
-        required: true,
-        type: Boolean
+    reservation_field_name:{
+        type: String
     },
     user_id: {
         required: true,
@@ -29,6 +28,6 @@ const reservasSchema = new Schema({
     }
 })
 
-const ReservasModel = mongoose.model('reservations', reservasSchema, 'reservations')
+const ReservasModel = mongoose.model('reservations', reservasSchema)
 
 export default ReservasModel
