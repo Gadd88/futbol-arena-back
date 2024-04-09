@@ -1,8 +1,8 @@
 import express from 'express';
 import usersControllers from '../controllers/usersControllers.js';
 import productController from '../controllers/productController.js';
-import userExtractor from '../services/userFinder.js';
-
+import reservationController from '../controllers/reservationController.js'
+import canchasController from '../controllers/canchasController.js';
 const router = express.Router();
 
 //obtener usuarios
@@ -31,5 +31,27 @@ router.delete('/products/:producto_id', productController.eliminarProducto)
 
 //editar producto
 router.put('/products/:producto_id', productController.actualizarProducto)
+
+// obtener una reserva
+router.get('/reservations', reservationController.getReservations)
+
+// reservar una cancha
+router.post('/reservations', reservationController.addReservation)
+
+// eliminar una reserva
+
+// editar una reserva
+
+
+// lista de canchas del predio
+router.get('/canchas/lista', canchasController.getCanchasLista)
+
+//lista de canchas con turnos para reservas
+router.get('/canchas', canchasController.getCanchas)
+
+//agregar cancha
+router.post('/canchas', canchasController.addCancha)
+
+
 
 export default router

@@ -2,26 +2,32 @@ import mongoose from "mongoose";
 import { Schema } from 'mongoose';
 
 const reservasSchema = new Schema({
-    reserva_id: {
+    reservation_id: {
         type: String,
         required: true,
         unique: true,
     },
-    fecha_reserva: {
+    reservation_date: {
         required: true,
         type: String
     },
-    hora_reserva: {
+    reservation_time: {
         required: true,
         type: String
     },
-    cancha_reserva: {
+    reservation_field_id: {
         required: true,
         type: String
     },
-    user_id: String
+    reservation_field_name:{
+        type: String
+    },
+    user_id: {
+        required: true,
+        type: String
+    }
 })
 
-const ReservasModel = mongoose.model('reservations', reservasSchema, 'reservations')
+const ReservasModel = mongoose.model('reservations', reservasSchema)
 
 export default ReservasModel
