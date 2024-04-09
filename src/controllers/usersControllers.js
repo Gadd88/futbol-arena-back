@@ -107,7 +107,7 @@ const loginUser = async (req,res) => {
                 expiresIn: 86400 //1 dia en seg
             }
         )
-        res.header(token).json({token})
+        res.status(200).json({token})
     }catch(err){
         console.log(err)
         res.status(400).json({message: "Error al iniciar sesión"})
