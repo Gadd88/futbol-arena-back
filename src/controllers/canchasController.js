@@ -4,14 +4,14 @@ import UserModel from "../models/userModel.js";
 import ReservasModel from "../models/reservasModel.js";
 
 const getCanchas = async (req, res) => {
-    const { cancha_id, fecha_buscada } = req.body
+    const { cancha_id, fecha_buscada } = req.query
     try{
         const [ canchaElegida ] = await CanchasModel.find({cancha_id : cancha_id})
         const reservas = await ReservasModel.find()
-        const reservasEnCancha = reservas.filter(reserva => reserva.reservation_field_id === cancha_id && reserva.reservation_date === fecha_buscada)
+        const reservasEnCancha = reservas.filter(reserva => reserva.reservation_field_id == canchaElegida.cancha_id && reserva.reservation_date == fecha_buscada)
         const turnosDisponibles = canchaElegida.cancha_turnos.map(turno => {
             for(let i = 0; i < reservasEnCancha.length; i++) {
-                if(turno.hora === reservasEnCancha[i].reservation_time){
+                if(turno.hora == reservasEnCancha[i].reservation_time){
                     return{
                         ...turno,
                         disponible: false
@@ -19,8 +19,19 @@ const getCanchas = async (req, res) => {
                 }
                 return turno
             }
+            return turno
         })
         res.status(200).json(turnosDisponibles)
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: err.message})
+    }
+}
+
+const getCanchasLista = async (req, res) => {
+    try{
+        const listaCanchas = await CanchasModel.find()
+        res.status(200).json(listaCanchas)
     }catch(err){
         console.log(err)
         res.status(500).json({message: err.message})
@@ -52,4 +63,5 @@ const addCancha = async (req, res) => {
 export default {
     getCanchas,
     addCancha,
+    getCanchasLista,
 }

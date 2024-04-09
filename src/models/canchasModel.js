@@ -93,6 +93,6 @@ const canchasSchema = new Schema({
 })
 
 
-const CanchasModel = mongoose.model('fields', canchasSchema, 'fields')
+const CanchasModel = mongoose.model('fields', canchasSchema)
 
 export default CanchasModel

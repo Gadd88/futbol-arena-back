@@ -46,7 +46,9 @@ router.post('/reservations', reservationController.addReservation)
 //lista de turnos
 router.get('/turnos', turnosController.getTurnos )
 
-//lista de canchas
+router.get('/canchas/lista', canchasController.getCanchasLista)
+
+//lista de canchas para reservas
 router.get('/canchas', canchasController.getCanchas)
 
 //agregar cancha
