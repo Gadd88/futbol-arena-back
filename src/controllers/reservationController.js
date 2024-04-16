@@ -22,6 +22,7 @@ const addReservation = async(req,res)=>{
         if(user){
             try{
                 const field_data = await CanchasModel.find({cancha_id: reservation_field_id})
+                
                 try{
                     const newReservation = new ReservasModel({
                         reservation_id: crypto.randomUUID(),
@@ -32,7 +33,8 @@ const addReservation = async(req,res)=>{
                         user_id,
                     })
                     await newReservation.save()
-                    res.status(201).json({message: "Reserva agregada con exito"})
+                    await UserModel.findOneAndUpdate({user_id: newReservation.user_id},{ $push: { reservas: newReservation } })
+                    res.status(201).json({message: "Reserva agregada con exito",newReservation, user})
                 }catch(err){
                     console.log(err)
                     res.status(500).json({message: 'Error al crear la reserva'})
