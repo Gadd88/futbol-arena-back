@@ -5,7 +5,8 @@ const canchasSchema = new Schema({
     cancha_id: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
+        
     },
     cancha_nombre: {
         type: String,
