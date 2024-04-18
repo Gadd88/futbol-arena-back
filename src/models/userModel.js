@@ -31,6 +31,14 @@ const userSchema = new Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 default: [],
                 ref: 'reservations',
+                validate:{
+                    validator: async function(value){
+                        const Reservas = mongoose.model('reservations')
+                        const reserva = await Reservas.findById(value);
+                        return reserva !== null;
+                    },
+                    message: 'El campo "Reserva" debe referir a un ID de reserva válido'
+                }
             }
         ],
     },
