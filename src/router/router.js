@@ -1,10 +1,11 @@
 import express from 'express';
 import usersControllers from '../controllers/usersControllers.js';
 import productController from '../controllers/productController.js';
-import userExtractor from '../services/userFinder.js';
-
+import reservationController from '../controllers/reservationController.js'
+import canchasController from '../controllers/canchasController.js';
 const router = express.Router();
 
+// USUARIOS*****
 //obtener usuarios
 router.get('/users', usersControllers.obtenerUsuarios)
 
@@ -20,6 +21,7 @@ router.put('/users/:user_id', usersControllers.actualizarUsuario)
 //delete usuario
 router.delete('/users/:user_id', usersControllers.eliminarUsuario)
 
+//PRODUCTOS******
 //obtener productos
 router.get('/products', productController.obtenerProductos)
 
@@ -31,5 +33,29 @@ router.delete('/products/:producto_id', productController.eliminarProducto)
 
 //editar producto
 router.put('/products/:producto_id', productController.actualizarProducto)
+
+//RESERVAS*****
+// obtener una reserva
+router.get('/reservations', reservationController.getReservations)
+
+// reservar una cancha
+router.post('/reservations', reservationController.addReservation)
+
+// eliminar una reserva
+router.delete('/reservations/:reservation_id', reservationController.deleteReservation)
+
+//CANCHAS*****
+// lista de canchas del predio
+router.get('/canchas/lista', canchasController.getCanchasLista)
+
+//lista de canchas con turnos para reservas
+router.get('/canchas', canchasController.getCanchas)
+
+//agregar cancha
+router.post('/canchas', canchasController.addCancha)
+
+//eliminar cancha
+router.delete('/canchas/:cancha_id', canchasController.deleteCancha)
+
 
 export default router
