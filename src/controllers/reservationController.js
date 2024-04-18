@@ -52,7 +52,27 @@ const addReservation = async(req,res)=>{
     }
 }
 
+const deleteReservation = async (req,res) => {
+    const { reservation_id } = req.params
+    const { user_id, isAdmin } = req.body
+
+    try{
+        const [reserva] = await ReservasModel.find({reservation_id: reservation_id})
+        if(reserva){
+            if(reserva.user_id == user_id || isAdmin === true ){
+                await ReservasModel.findOneAndDelete({reservation_id: reservation_id})
+                return res.status(200).json({message: 'Reserva Eliminada'})
+            }
+        }
+        return res.status(403).json({message: 'Solo el usuario que creó la reserva puede eliminarla'})
+    }catch(err){
+        return res.status(500).json({message: err.message})
+    }
+
+}
+
 export default {
     getReservations,
     addReservation,
+    deleteReservation
 }

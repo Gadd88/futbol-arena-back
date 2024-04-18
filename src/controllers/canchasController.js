@@ -49,6 +49,7 @@ const addCancha = async (req, res) => {
         res.status(403).json({message: 'No tienes permiso para realizar esta operación'})
     }
     if(usuarioDB.isAdmin === true){
+        if(cancha_nombre == '' || cancha_detalle == '') return res.status(400).json({message: 'Necesita ingresar nombre y detalle de cancha'})
         const newCancha = CanchasModel({
             cancha_id: crypto.randomUUID(),
             cancha_nombre,
@@ -59,9 +60,29 @@ const addCancha = async (req, res) => {
     }
 }
 
+const deleteCancha = async (req,res) => {
+    const { cancha_id } = req.params
+    const { isAdmin } = req.body
+    
+    try{
+        const [cancha] = await CanchasModel.find({cancha_id: cancha_id})
+        if(cancha){
+            if( isAdmin === true ){
+                await CanchasModel.findOneAndDelete({cancha_id: cancha_id})
+                return res.status(200).json({message: 'Cancha Eliminada'})
+            }
+            return res.status(403).json({message: 'Solo un Administrador puede eliminar Canchas'})
+        }
+    }catch(err){    
+        return res.status(500).json({message: err.message})
+    }
+
+}
+
 
 export default {
     getCanchas,
     addCancha,
     getCanchasLista,
+    deleteCancha
 }
