@@ -70,7 +70,7 @@ const eliminarProducto = async (req, res) => {
 const actualizarProducto = async (req, res) => {
   try {
     const { producto_id } = req.params;
-    const { producto, detalle, precio, stock, imagen, categoria } = req.body;
+    const { producto, detalle, precio, imagen, categoria } = req.body;
     const token = req.get("authorization").split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const { user_id } = decodedToken;

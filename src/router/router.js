@@ -32,7 +32,7 @@ router.post('/products', productController.agregarProducto)
 router.delete('/products/:producto_id', productController.eliminarProducto)
 
 //editar producto
-router.put('/products/:producto_id', productController.actualizarProducto)
+router.patch('/products/:producto_id', productController.actualizarProducto)
 
 //RESERVAS*****
 // obtener una reserva
