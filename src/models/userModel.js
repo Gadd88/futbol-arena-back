@@ -28,7 +28,7 @@ const userSchema = new Schema(
         },
         reservas: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                type: String,
                 default: [],
                 ref: 'reservations',
                 validate:{
