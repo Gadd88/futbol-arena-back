@@ -33,7 +33,7 @@ const addReservation = async(req,res)=>{
                         user_id,
                     })
                     await newReservation.save()
-                    await UserModel.findOneAndUpdate({user_id: newReservation.user_id},{ $push: { reservas: newReservation } })
+                    await UserModel.findOneAndUpdate({user_id: newReservation.user_id},{ $push: { reservas: newReservation.reservation_id } })
                     res.status(201).json({message: "Reserva agregada con exito",newReservation, user})
                 }catch(err){
                     console.log(err)
@@ -60,6 +60,7 @@ const deleteReservation = async (req,res) => {
         const [reserva] = await ReservasModel.find({reservation_id: reservation_id})
         if(reserva){
             if(reserva.user_id == user_id || isAdmin === true ){
+                await UserModel.findOneAndUpdate({user_id: reserva.user_id}, { $pull: {reservas: reserva._id}})
                 await ReservasModel.findOneAndDelete({reservation_id: reservation_id})
                 return res.status(200).json({message: 'Reserva Eliminada'})
             }
