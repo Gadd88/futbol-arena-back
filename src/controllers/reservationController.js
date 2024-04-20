@@ -16,19 +16,19 @@ const getReservations = async (req,res) =>{
 
 const addReservation = async(req,res)=>{
     try{
-        const {reservation_date,reservation_time,reservation_field_id,user_id} = req.body
-        if(!reservation_date || !reservation_time || !reservation_field_id) res.status(400).json({message: 'Faltan datos'})
+        const {reservation_date,reservation_time_id,reservation_field_id,user_id, reservation_time} = req.body
+        if(!reservation_date || !reservation_time_id || !reservation_field_id || !reservation_time) res.status(400).json({message: 'Faltan datos'})
         const user = await UserModel.find({user_id: user_id})
         if(user){
-            const existeReserva = await ReservasModel.findOne({reservation_time: reservation_time, reservation_field_id: reservation_field_id, reservation_date: reservation_date})
+            const existeReserva = await ReservasModel.findOne({reservation_time_id: reservation_time_id, reservation_field_id: reservation_field_id, reservation_date: reservation_date})
             if(!existeReserva){
                 try{
-                    const field_data = await CanchasModel.find({cancha_id: reservation_field_id})
-                    
+                    const [field_data] = await CanchasModel.find({cancha_id: reservation_field_id})
                     try{
                         const newReservation = new ReservasModel({
                             reservation_id: crypto.randomUUID(),
                             reservation_date,
+                            reservation_time_id,
                             reservation_time,
                             reservation_field_id,
                             reservation_field_name: field_data.cancha_nombre,

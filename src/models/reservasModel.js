@@ -11,6 +11,10 @@ const reservasSchema = new Schema({
         required: true,
         type: String
     },
+    reservation_time_id: {
+        required: true,
+        type: String
+    },
     reservation_time: {
         required: true,
         type: String
