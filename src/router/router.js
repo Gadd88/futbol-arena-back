@@ -8,6 +8,7 @@ const router = express.Router();
 // USUARIOS*****
 //obtener usuarios
 router.get('/users', usersControllers.obtenerUsuarios)
+router.get('/users/:user_id', usersControllers.obtenerUnicoUsuario)
 
 //registro usuario
 router.post('/registro', usersControllers.registroUsuario)

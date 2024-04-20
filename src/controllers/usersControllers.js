@@ -12,6 +12,17 @@ const obtenerUsuarios = async (req, res) => {
     }
 }
 
+//Obtener único usuario
+const obtenerUnicoUsuario = async (req, res) => {
+    const { user_id } = req.params
+    try{
+        const [usuario] = await UserModel.find({user_id})
+        if(!usuario) res.status(404).json({message: 'Usuario no encontrado'})
+        res.status(200).json(usuario)
+    }catch(err){
+        throw new Error(err)
+    }
+}
 //Registro usuarios
 const registroUsuario = async (req,res) =>{
     try{
@@ -120,5 +131,6 @@ export default {
     registroUsuario,
     actualizarUsuario,
     eliminarUsuario,
-    loginUser
+    loginUser,
+    obtenerUnicoUsuario
 }
