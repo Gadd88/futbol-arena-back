@@ -26,6 +26,9 @@ router.delete('/users/:user_id', usersControllers.eliminarUsuario)
 //obtener productos
 router.get('/products', productController.obtenerProductos)
 
+//obtener un producto
+router.get('/products/:id', productController.obtenerUnicoProducto)
+
 //agregar producto
 router.post('/products', productController.agregarProducto)
 
