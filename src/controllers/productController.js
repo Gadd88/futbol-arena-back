@@ -12,6 +12,17 @@ const obtenerProductos = async (req, res) => {
   }
 };
 
+const obtenerUnicoProducto = async (req,res) => {
+  const {id} = req.params
+  try{
+    const producto = await ProductModel.findOne({producto_id: id})
+    console.log(producto)
+    res.status(200).json(producto)
+  }catch(error){
+    throw new Error(error)
+  }
+}
+
 //agregar producto
 const agregarProducto = async (req, res) => {
   try {
@@ -105,4 +116,5 @@ export default {
   agregarProducto,
   eliminarProducto,
   actualizarProducto,
+  obtenerUnicoProducto
 };
