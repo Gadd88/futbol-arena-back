@@ -39,8 +39,11 @@ router.delete('/products/:producto_id', productController.eliminarProducto)
 router.patch('/products/:producto_id', productController.actualizarProducto)
 
 //RESERVAS*****
-// obtener una reserva
+// obtener lista de reservas
 router.get('/reservations', reservationController.getReservations)
+
+// obtener una reserva
+router.get('/reservations/:reserva_id', reservationController.getOneReservation)
 
 // reservar una cancha
 router.post('/reservations', reservationController.addReservation)

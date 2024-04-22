@@ -10,7 +10,17 @@ const getReservations = async (req,res) =>{
         const reservations = await reservasModel.find()
         res.status(200).json(reservations)
     }catch(error){
-        console.log(error)
+        res.status(500).json({message: 'Ocurrió un error en la consulta'})
+    }
+}
+
+const getOneReservation = async (req,res) => {
+    const {reserva_id} = req.params
+    try{
+        const reserva = await reservasModel.findOne({reservation_id: reserva_id})
+        res.status(200).json(reserva)
+    }catch(error){
+        res.status(404).json({message: 'Reserva no encontrada'})
     }
 }
 
@@ -80,5 +90,6 @@ const deleteReservation = async (req,res) => {
 export default {
     getReservations,
     addReservation,
-    deleteReservation
+    deleteReservation,
+    getOneReservation,
 }
