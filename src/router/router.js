@@ -72,6 +72,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
 
 //swagger
 
+// swagger for users
 /** 
 @swagger
 components:
@@ -112,14 +113,14 @@ components:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/models/userModels'
+ *             $ref: '#/models/userModel'
  *     responses:
  *       200:
  *         description: New user created.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/src/models/userModels'
+ *               $ref: '#/src/models/userModel'
  *       500:
  *         description: Some server error
  *
@@ -141,7 +142,7 @@ components:
  *           application/json:
  *             schema:
  *                  type: array
- *                  items: $ref: '#/src/models/userModels'
+ *                  items: $ref: '#/src/models/userModel'
  *       500:
  *         description: Some server error
  *
@@ -158,7 +159,7 @@ components:
  *     tags: [Users]
  *     parameters:
  *          -in: path
- *          name: ide
+ *          name: id
  *          schema:
  *              type: string
  *          required: true
@@ -169,7 +170,7 @@ components:
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/src/models/userModels'
+ *               $ref: '#/src/models/userModel'
  *       404:
  *         description: User not found
  *
@@ -219,16 +220,187 @@ components:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/models/userModels'
+ *             $ref: '#/models/userModel'
  *     responses:
  *       200:
  *         description: The user was update
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/models/userModels'
+ *                          $ref: '#/models/userModel'
  *       404:
  *         description: The user was not found
+ */
+
+// swagger for products
+
+/** 
+@swagger
+components:
+    schemas:
+        Products:
+            type: object
+            require:
+                -producto
+                -detalle
+                -precio
+                -imagen
+                -categoria
+            properties:
+                producto:
+                    type: string
+                    description:
+                detalle:
+                    type: string
+                    description: 
+                precio:
+                    type: string
+                    description: 
+                imagen:
+                    type: string
+                    description: 
+                categoria:
+                    type: string
+                    description: 
+        example: 
+            name: Remera River Plate Adidas
+            detalle: Remera Slim fit for football
+            precio: 70000$
+            imagen : "link:url"
+            categoria: Indumentaria
+*/
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: The products managing API
+ * products:
+ *   post:
+ *     summary: Create a new product
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/models/productModel'
+ *     responses:
+ *       200:
+ *         description: New product created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/src/models/productModel'
+ *       500:
+ *         description: Some server error
+ *
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: The products managing API
+ * /products:
+ *   get:
+ *     summary: List all the products
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: The list of the products.
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: array
+ *                  items: $ref: '#/src/models/productModel'
+ *       500:
+ *         description: Some server error
+ *
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: The product managing API
+ * /product/{id}:
+ *   get:
+ *     summary: Get a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *          -in: path
+ *          name: id
+ *          schema:
+ *              type: string
+ *          required: true
+ *          description: The product ID
+ *     responses:
+ *       200:
+ *         description: Get product by ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/src/models/productModels'
+ *       404:
+ *         description: product not found
+ *
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: The products managing API
+ * /products/{id}:
+ *   delete:
+ *     summary: Remove the product by id
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The product id
+ *     responses:
+ *       200:
+ *         description: The product was deleted
+ *       404:
+ *         description: The product was not found
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: products
+ *   description: The products managing API
+ * /Products/{id}:
+ *   put:
+ *     summary: Update the product by id
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The product id
+ *      requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/models/productModels'
+ *     responses:
+ *       200:
+ *         description: The product was update
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/models/productModels'
+ *       404:
+ *         description: The product was not found
  */
 
 export default router;
