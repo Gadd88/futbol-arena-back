@@ -3,32 +3,8 @@ import cors from "cors";
 import "dotenv/config";
 import router from "./src/router/router.js";
 import connectDB from "./src/controllers/dbController.js";
-const swaggerUI = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
-
-// Swagger
-
-const optionsSwg = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Futbol Arena",
-      version: "1.0.0",
-      description:
-        "API para pagina de reserva de canchas con ecommerce incluido",
-    },
-    servers: [
-      {
-        url: "http://localhost:5174",
-      },
-    ],
-  },
-  apis: ["./router/*.js"],
-};
-
-const specs = swaggerJsDoc(optionsSwg);
-
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 //Consantes
 const PORT = process.env.PORT ? process.env.PORT : 3001;
@@ -101,3 +77,27 @@ const initApp = () => {
 };
 
 initApp();
+
+// Swagger
+
+const optionsSwg = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Futbol Arena",
+      version: "1.0.0",
+      description:
+        "API para pagina de reserva de canchas con ecommerce incluido",
+    },
+    servers: [
+      {
+        url: "http://localhost:5174",
+      },
+    ],
+  },
+  apis: ["./router/*.js"],
+};
+
+const specs = swaggerJsdoc(optionsSwg);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
