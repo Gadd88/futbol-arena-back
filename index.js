@@ -91,7 +91,7 @@ const optionsSwg = {
     },
     servers: [
       {
-        url: "http://localhost:5174",
+        url: "http://localhost:${PORT}",
       },
     ],
   },
