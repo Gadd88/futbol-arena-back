@@ -74,30 +74,106 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
 
 // swagger for users
 /** 
-@swagger
-components:
-    schemas:
-        User:
-            type: object
-            require:
-                -nombre
-                -email
-                -telefono
-            properties:
-                nombre:
-                type: string
-                description:
-            email:
-                type: string
-                description: 
-            telefono:
-                type: string
-                description: 
-        example: 
-            name: Joaquin Reyes
-            email: joacooreyes@gmail.com  
-            telefono: 3816655544
+*@swagger
+*components:
+*    schemas:
+*        User:
+*            type: object
+*            properties:
+*                nombre:
+*                    type: string
+*                    example: Joaquin Reyes
+*                email:
+*                    type: string 
+*                    example: joacooreyes@gmail.com  
+*                telefono:
+*                    type: string 
+*                    example: 3816655544
+*            required:
+*                -nombre
+*                -email
+*                -telefono
+*        Products:
+*            type: object
+*            require:
+*                -producto
+*                -detalle
+*                -precio
+*                -imagen
+*                -categoria
+*            properties:
+*                producto:
+*                    type: string
+*                    example: Remera River Plate Adidas
+*                    description:
+*                detalle:
+*                    type: string
+*                    example: Remera Slim fit for football
+*                    description: 
+*                precio:
+*                    type: string
+*                    example: 70000
+*                    description: 
+*                imagen:
+*                    type: string
+*                    example : "link:url"
+*                    description: 
+*                categoria:
+*                    type: string
+*                    example: Indumentaria
+*                    description:
 */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: The users managing API
+ * /users:
+ *   get:
+ *     summary: List of all Users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: List of users.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: "array"
+ *               items:
+ *                  $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: The users managing API
+ * /users/{id}:
+ *   get:
+ *     summary: Get a user by ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *             type: string
+ *         required: true
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: Get user by ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *
+ */
 
 /**
  * @swagger
@@ -113,68 +189,20 @@ components:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/models/userModel'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: New user created.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/src/models/userModel'
+ *               $ref: '#/components/schemas/User'
  *       500:
  *         description: Some server error
  *
  */
 
-/**
- * @swagger
- * tags:
- *   name: Users
- *   description: The users managing API
- * /users:
- *   get:
- *     summary: List all the users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: The list of the users.
- *         content:
- *           application/json:
- *             schema:
- *                  type: array
- *                  items: $ref: '#/src/models/userModel'
- *       500:
- *         description: Some server error
- *
- */
 
-/**
- * @swagger
- * tags:
- *   name: Users
- *   description: The users managing API
- * /users/{id}:
- *   get:
- *     summary: Get a user by ID
- *     tags: [Users]
- *     parameters:
- *          -in: path
- *          name: id
- *          schema:
- *              type: string
- *          required: true
- *          description: The user ID
- *     responses:
- *       200:
- *         description: Get user by ID.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/src/models/userModel'
- *       404:
- *         description: User not found
- *
- */
 
 /**
  * @swagger
@@ -198,15 +226,14 @@ components:
  *       404:
  *         description: The user was not found
  */
-
 /**
  * @swagger
  * tags:
  *   name: Users
  *   description: The users managing API
  * /users/{id}:
- *   put:
- *     summary: Update the user by id
+ *   patch:
+ *     summary: update user by id
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -215,60 +242,54 @@ components:
  *           type: string
  *         required: true
  *         description: The user id
- *      requestBody:
+ *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/models/userModel'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
- *         description: The user was update
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/models/userModel'
+ *         description: The user was updated
  *       404:
  *         description: The user was not found
  */
 
+/**
+ *  @swagger
+ *  tags:
+ *    name: Users
+ *    description: The users managing API
+ *  /users/{id}:
+ *    patch:
+ *        summary: Update the user by id
+ *        tags: [Users]
+ *        parameters:
+ *            - in: path
+ *              name: id
+ *              schema:
+ *                type: string
+ *              required: true
+ *              description: the user id
+ *        requestBody:
+ *            required: true
+ *            content:
+ *                application/json
+ *                    schema:
+ *                        $ref: '#/componentes/schemas/User'
+ *        responses:
+ *            200:
+ *                description: the user was updated
+ *                    content:
+ *                        application/json
+ *                            schema:
+ *                                $ref: '#/componentes/schemas/User'
+ *            404:
+ *                description: the user was not found
+ */
+
 // swagger for products
 
-/** 
-@swagger
-components:
-    schemas:
-        Products:
-            type: object
-            require:
-                -producto
-                -detalle
-                -precio
-                -imagen
-                -categoria
-            properties:
-                producto:
-                    type: string
-                    description:
-                detalle:
-                    type: string
-                    description: 
-                precio:
-                    type: string
-                    description: 
-                imagen:
-                    type: string
-                    description: 
-                categoria:
-                    type: string
-                    description: 
-        example: 
-            name: Remera River Plate Adidas
-            detalle: Remera Slim fit for football
-            precio: 70000$
-            imagen : "link:url"
-            categoria: Indumentaria
-*/
 
 /**
  * @swagger
@@ -284,14 +305,14 @@ components:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/models/productModel'
+ *             $ref: '#/components/schemas/Products'
  *     responses:
  *       200:
  *         description: New product created.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/src/models/productModel'
+ *               $ref: '#/components/schemas/Products'
  *       500:
  *         description: Some server error
  *
@@ -312,8 +333,8 @@ components:
  *         content:
  *           application/json:
  *             schema:
- *                  type: array
- *                  items: $ref: '#/src/models/productModel'
+ *               type: array
+ *               items: $ref: '#/components/schemas/Products'
  *       500:
  *         description: Some server error
  *
@@ -329,19 +350,19 @@ components:
  *     summary: Get a product by ID
  *     tags: [Products]
  *     parameters:
- *          -in: path
- *          name: id
- *          schema:
- *              type: string
- *          required: true
- *          description: The product ID
+*          - in: path
+*            name: id
+*            schema:
+*              type: string
+*            required: true
+*            description: The product ID
  *     responses:
  *       200:
  *         description: Get product by ID.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/src/models/productModels'
+ *               $ref: '#/components/schemas/Products'
  *       404:
  *         description: product not found
  *
@@ -376,7 +397,7 @@ components:
  *   name: products
  *   description: The products managing API
  * /Products/{id}:
- *   put:
+ *   patch:
  *     summary: Update the product by id
  *     tags: [Products]
  *     parameters:
@@ -386,19 +407,19 @@ components:
  *           type: string
  *         required: true
  *         description: The product id
- *      requestBody:
+ *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/models/productModels'
+ *             $ref: '#/components/schemas/Productss'
  *     responses:
  *       200:
  *         description: The product was update
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/models/productModels'
+ *                          $ref: '#/components/schemas/Productss'
  *       404:
  *         description: The product was not found
  */

@@ -91,11 +91,11 @@ const optionsSwg = {
     },
     servers: [
       {
-        url: "http://localhost:${PORT}",
+        url: `http://localhost:${PORT}`,
       },
     ],
   },
-  apis: ["./router/*.js"],
+  apis: ["./src/router/*.js"],
 };
 
 const specs = swaggerJsdoc(optionsSwg);
