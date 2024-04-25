@@ -93,14 +93,9 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
 *                -nombre
 *                -email
 *                -telefono
+*
 *        Products:
 *            type: object
-*            require:
-*                -producto
-*                -detalle
-*                -precio
-*                -imagen
-*                -categoria
 *            properties:
 *                producto:
 *                    type: string
@@ -122,6 +117,66 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
 *                    type: string
 *                    example: Indumentaria
 *                    description:
+*            required:
+*                -producto
+*                -detalle
+*                -precio
+*                -imagen
+*                -categoria
+*
+*        Reservations:
+*            type: object
+*            properties:
+*                reservation_date:
+*                    type: string
+*                    example: 20/05/2024
+*                reservation_time:
+*                    type: string
+*                    example: 17:00 - 17:45
+*                reservation_time_id:
+*                    type: string
+*                    example: abc123
+*                reservation_field_id:
+*                    type: string
+*                    example: asdaksbas516a5s1d2
+*                reservation_field_name:
+*                    type: string
+*                    example: Coliseo
+*                reservation_id:
+*                    type: string
+*                    example: asdnio-aubv5-4651
+*                user_id:
+*                    type: string
+*                    example: asdnio-aasdasdv5-46asd51
+*            required:
+*                -reservation_date
+*                -reservation_time
+*                -reservation_time_id
+*                -reservation_field_id
+*                -reservation_field_name
+*                -reservation_id
+*                -user_id
+*
+*        Canchas:
+*            type: object
+*            properties:
+*                cancha_nombre:
+*                    type: string
+*                    example: coliseo
+*                cancha_detalle:
+*                    type: string
+*                    example: Futbol 5
+*                cancha_id:
+*                    type: string
+*                    example: abc123
+*                cancha_turnos:
+*                    type: 'array'
+*                    example: ['10:00 - 10:45', '11:00 - 11:45']
+*            required:
+*                -cancha_nombre
+*                -cancha_detalle
+*                -cancha_id
+*                -cancha_turnos
 */
 
 /**
@@ -226,6 +281,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  *       404:
  *         description: The user was not found
  */
+
 /**
  * @swagger
  * tags:
@@ -255,48 +311,68 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  *         description: The user was not found
  */
 
-/**
- *  @swagger
- *  tags:
- *    name: Users
- *    description: The users managing API
- *  /users/{id}:
- *    patch:
- *        summary: Update the user by id
- *        tags: [Users]
- *        parameters:
- *            - in: path
- *              name: id
- *              schema:
- *                type: string
- *              required: true
- *              description: the user id
- *        requestBody:
- *            required: true
- *            content:
- *                application/json
- *                    schema:
- *                        $ref: '#/componentes/schemas/User'
- *        responses:
- *            200:
- *                description: the user was updated
- *                    content:
- *                        application/json
- *                            schema:
- *                                $ref: '#/componentes/schemas/User'
- *            404:
- *                description: the user was not found
- */
 
 // swagger for products
-
 
 /**
  * @swagger
  * tags:
  *   name: Products
  *   description: The products managing API
- * products:
+ * /products:
+ *   get:
+ *     summary: List all the products
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: The list of the products.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items: 
+ *                  $ref: '#/components/schemas/Products'
+ *       500:
+ *         description: Some server error
+ *
+ */
+
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: The product managing API
+ * /product/{id}:
+ *   get:
+ *     summary: Get a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: The product ID
+ *     responses:
+ *       200:
+ *         description: Get product by ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Products'
+ *       404:
+ *         description: product not found
+*
+*/
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: The products managing API
+ * /products:
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
@@ -315,56 +391,6 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  *               $ref: '#/components/schemas/Products'
  *       500:
  *         description: Some server error
- *
- */
-
-/**
- * @swagger
- * tags:
- *   name: Products
- *   description: The products managing API
- * /products:
- *   get:
- *     summary: List all the products
- *     tags: [Products]
- *     responses:
- *       200:
- *         description: The list of the products.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items: $ref: '#/components/schemas/Products'
- *       500:
- *         description: Some server error
- *
- */
-
-/**
- * @swagger
- * tags:
- *   name: Products
- *   description: The product managing API
- * /product/{id}:
- *   get:
- *     summary: Get a product by ID
- *     tags: [Products]
- *     parameters:
-*          - in: path
-*            name: id
-*            schema:
-*              type: string
-*            required: true
-*            description: The product ID
- *     responses:
- *       200:
- *         description: Get product by ID.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Products'
- *       404:
- *         description: product not found
  *
  */
 
@@ -394,11 +420,11 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
 /**
  * @swagger
  * tags:
- *   name: products
+ *   name: Products
  *   description: The products managing API
- * /Products/{id}:
+ * /products/{id}:
  *   patch:
- *     summary: Update the product by id
+ *     summary: Remove the product by id
  *     tags: [Products]
  *     parameters:
  *       - in: path
@@ -410,18 +436,108 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Productss'
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Products'
  *     responses:
  *       200:
- *         description: The product was update
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Productss'
+ *         description: The product was updated
  *       404:
  *         description: The product was not found
  */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Reservations
+ *   description: The reservation managing API
+ * /reservations:
+ *   get:
+ *       summary: Get list of reservations
+ *       tags: [Reservations]
+ *       responses:
+ *           200:
+ *               content:
+ *                   application/json:
+ *                       schema:
+ *                           type: 'array'
+ *                           items: 
+ *                              $ref: '#/components/schemas/Reservations'
+ *           5XX:
+ *              description: Some server error
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Reservations
+ *   description: The reservation managing API
+ * /reservations/{id}:
+ *   get:
+ *       summary: Get reservation by id
+ *       tags: [Reservations]
+ *       parameters:
+ *          - in: path
+ *            name: id
+ *            schema: 
+ *              type: string
+ *            required: true
+ *            description: the reservation ID
+ *       responses:
+ *           200:
+ *               content:
+ *                   application/json:
+ *                       schema:
+ *                           type: object
+ *                           $ref: '#/components/schemas/Reservations'
+ *           404:
+ *               description: Reservation not found
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Reservations
+ *   description: The reservation managing API
+ * /reservations/{id}:
+ *   delete:
+ *       summary: Delete reservation by id
+ *       tags: [Reservations]
+ *       parameters:
+ *          - in: path
+ *            name: id
+ *            schema: 
+ *              type: string
+ *            required: true
+ *            description: the reservation ID
+ *       responses:
+ *           200:
+ *               description: Reservation deleted
+ *           404:
+ *               description: Reservation not found
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Reservations
+ *   description: The reservation managing API
+ * /reservations:
+ *   post:
+ *       summary: Create new reservation
+ *       tags: [Reservations]
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Reservations'
+ *       responses:
+ *           200:
+ *               description: Reservation deleted
+ *           404:
+ *               description: Reservation not found
+ */
+
 
 export default router;
