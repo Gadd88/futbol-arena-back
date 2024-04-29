@@ -89,6 +89,10 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
 *                telefono:
 *                    type: string 
 *                    example: 3816655544
+*                isAdmin:
+*                    type: boolean
+*                    default: false
+*                    example: true
 *            required:
 *                -nombre
 *                -email
@@ -171,12 +175,27 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
 *                    example: abc123
 *                cancha_turnos:
 *                    type: 'array'
-*                    example: ['10:00 - 10:45', '11:00 - 11:45']
+*                    items:
+*                       $ref: '#/components/schemas/CanchaTurnos'
 *            required:
 *                -cancha_nombre
 *                -cancha_detalle
 *                -cancha_id
 *                -cancha_turnos
+
+*        CanchaTurnos:
+*            type: object
+*            properties:
+*                turnoId:
+*                    type: string
+*                    example: abc123
+*                hora:
+*                    type: string
+*                    example: 10:00 - 10:45
+*                disponible:
+*                    type: boolean
+*                    example: true
+*
 */
 
 /**
@@ -184,7 +203,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Users
  *   description: The users managing API
- * /users:
+ * /api/users:
  *   get:
  *     summary: List of all Users
  *     tags: [Users]
@@ -207,7 +226,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Users
  *   description: The users managing API
- * /users/{id}:
+ * /api/users/{id}:
  *   get:
  *     summary: Get a user by ID
  *     tags: [Users]
@@ -235,7 +254,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Users
  *   description: The users managing API
- * /users:
+ * /api/users:
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
@@ -264,7 +283,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Users
  *   description: The users managing API
- * /users/{id}:
+ * /api/users/{id}:
  *   delete:
  *     summary: Remove the user by id
  *     tags: [Users]
@@ -287,7 +306,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Users
  *   description: The users managing API
- * /users/{id}:
+ * /api/users/{id}:
  *   patch:
  *     summary: update user by id
  *     tags: [Users]
@@ -319,7 +338,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Products
  *   description: The products managing API
- * /products:
+ * /api/products:
  *   get:
  *     summary: List all the products
  *     tags: [Products]
@@ -344,7 +363,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Products
  *   description: The product managing API
- * /product/{id}:
+ * /api/products/{id}:
  *   get:
  *     summary: Get a product by ID
  *     tags: [Products]
@@ -372,7 +391,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Products
  *   description: The products managing API
- * /products:
+ * /api/products:
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
@@ -399,7 +418,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Products
  *   description: The products managing API
- * /products/{id}:
+ * /api/products/{id}:
  *   delete:
  *     summary: Remove the product by id
  *     tags: [Products]
@@ -422,7 +441,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Products
  *   description: The products managing API
- * /products/{id}:
+ * /api/products/{id}:
  *   patch:
  *     summary: Remove the product by id
  *     tags: [Products]
@@ -451,7 +470,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Reservations
  *   description: The reservation managing API
- * /reservations:
+ * /api/reservations:
  *   get:
  *       summary: Get list of reservations
  *       tags: [Reservations]
@@ -472,7 +491,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Reservations
  *   description: The reservation managing API
- * /reservations/{id}:
+ * /api/reservations/{id}:
  *   get:
  *       summary: Get reservation by id
  *       tags: [Reservations]
@@ -499,7 +518,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Reservations
  *   description: The reservation managing API
- * /reservations/{id}:
+ * /api/reservations/{id}:
  *   delete:
  *       summary: Delete reservation by id
  *       tags: [Reservations]
@@ -522,7 +541,7 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  * tags:
  *   name: Reservations
  *   description: The reservation managing API
- * /reservations:
+ * /api/reservations:
  *   post:
  *       summary: Create new reservation
  *       tags: [Reservations]
@@ -538,6 +557,100 @@ router.delete("/canchas/:cancha_id", canchasController.deleteCancha);
  *           404:
  *               description: Reservation not found
  */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Canchas
+ *   description: The fields managing API
+ * /api/canchas/lista:
+ *   get:
+ *       summary: Get a list of all existing fields
+ *       tags: [Canchas]
+ *       responses:
+ *           200:
+ *               description: List all fields
+ *               content:
+ *                 application/json:
+ *                   schema:
+ *                      type: array
+ *                      items:
+ *                          $ref: '#/components/schemas/Canchas'
+ *       
+ *           404:
+ *               description: fields not found
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Canchas
+ *   description: The fields managing API
+ * /api/canchas:
+ *   get:
+ *       summary: Get a list of all available turns
+ *       tags: [Canchas]
+ *       parameters:
+ *          - in: query
+ *            name: fecha_buscada
+ *            schema:
+ *              type: string
+ *              pattern: '^\d{2}/\d{2}/\d{4}$'
+ *            required: true
+ *            example: '10/05/2024'
+ *            description: the requested date string format DD/MM/YYYY
+ *          - in: query
+ *            name: cancha_id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            example: 942b3811-bf6e-4f31-940a-3b296e2b7144
+ *            description: the requested field id
+ *       responses:
+ *           200:
+ *               description: List the turns on the selected field
+ *               content:
+ *                 application/json:
+ *                   schema:
+ *                      type: array
+ *                      items:
+ *                          $ref: '#/components/schemas/CanchaTurnos'
+ *                          
+ *       
+ *           5XX:
+ *               description: Some server error
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Canchas
+ *   description: The field managing API
+ * /api/canchas/{id}:
+ *   delete:
+ *       summary: Delete a field by id, Only ADMINS
+ *       tags: [Canchas]
+ *       parameters:
+ *          - in: path
+ *            name: id
+ *            schema: 
+ *              type: string
+ *            required: true
+ *            description: the field ID
+ *       requestBody:
+ *        content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *       responses:
+ *           200:
+ *               description: Cancha Eliminada
+ *           404:
+ *               description: No se encuentra la cancha
+ *           403:
+ *               description: No tiene permisos para realizar esta acción
+ */
+
 
 
 export default router;

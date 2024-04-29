@@ -100,4 +100,4 @@ const optionsSwg = {
 
 const specs = swaggerJsdoc(optionsSwg);
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api", swaggerUi.serve, swaggerUi.setup(specs));
