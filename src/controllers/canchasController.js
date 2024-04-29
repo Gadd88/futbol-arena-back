@@ -78,8 +78,12 @@ const deleteCancha = async (req,res) => {
     
     try{
         const [cancha] = await CanchasModel.find({cancha_id: cancha_id})
+        const reservas = await ReservasModel.find({reservation_field_id: cancha_id})
         if(cancha){
             if( isAdmin === true ){
+                if(reservas.length > 0){
+                    return res.status(500).json({message: "No puede eliminarse una cancha con reservas"})
+                }
                 await CanchasModel.findOneAndDelete({cancha_id: cancha_id})
                 return res.status(200).json({message: 'Cancha Eliminada'})
             }
