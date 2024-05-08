@@ -7,33 +7,22 @@ const getCanchas = async (req, res) => {
     const { cancha_id, fecha_buscada } = req.query
     try{
         const [ canchaElegida ] = await CanchasModel.find({cancha_id : cancha_id})
-        // const reservasEnCancha = await ReservasModel.find({reservation_field_id : canchaElegida.cancha_id, reservation_date: fecha_buscada})
-        // if(reservasEnCancha.length > 0){
-        //     // const turnosMap = new Map(canchaElegida.cancha_turnos.map(turno => [turno.turnoId, turno]));
-        //     // for (const reserva of reservasEnCancha) {
-        //     //     const turno = turnosMap.get(reserva.reservation_time_id);
-        //     //     if (turno) {
-        //     //         turno.disponible = false;
-        //     //     }
-        //     // }
-        //     // const turnosActualizados = Array.from(turnosMap.values());
-        //     // return res.status(200).json(turnosActualizados);
-        //     // ******
-        //     const turnosDisponibles = canchaElegida.cancha_turnos.map(turno => {
-        //         for(let i= 0; i < reservasEnCancha.length; i++) {
-        //             if(turno.turnoId == reservasEnCancha[i].reservation_time_id){
-        //                  turno.disponible=false
-        //             }else{
-        //                 turno
-        //             }
-        //         }
-        //         return turno
-        //     })
-        //     return res.status(200).json(turnosDisponibles)
-        // }else{
-        //     return res.status(200).json(canchaElegida.cancha_turnos)
-        // }
-        res.status(200).json(canchaElegida.cancha_turnos)
+        const reservasEnCancha = await ReservasModel.find({reservation_field_id : canchaElegida.cancha_id, reservation_date: fecha_buscada})
+        if(reservasEnCancha.length > 0){
+            const turnosDisponibles = canchaElegida.cancha_turnos.map(turno => {
+                for(let i= 0; i < reservasEnCancha.length; i++) {
+                    if(turno.turnoId == reservasEnCancha[i].reservation_time_id){
+                         turno.disponible=false
+                    }else{
+                        turno
+                    }
+                }
+                return turno
+            })
+            return res.status(200).json(turnosDisponibles)
+        }else{
+            return res.status(200).json(canchaElegida.cancha_turnos)
+        }
     }catch(err){
         console.log(err)
         res.status(500).json({message: err.message})
