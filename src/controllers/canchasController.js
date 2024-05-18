@@ -42,7 +42,7 @@ const getCanchasLista = async (req, res) => {
 const addCancha = async (req, res) => {
     const { cancha_nombre, cancha_detalle } = req.body
 
-    const token = req.get('authorization').split(' ')[1];
+    const token = req.get("authorization").split(" ")[1].replace(/['"]+/g,'');
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
     const { user_id } = decodedToken
     const usuarioDB = await UserModel.findOne({user_id})
