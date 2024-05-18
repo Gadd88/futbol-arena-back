@@ -105,20 +105,19 @@ const loginUser = async (req,res) => {
             return res.status(400).json({message: "Usuario y/o Password inconrrecto"})
         }
         //TOKEN JWT
-        const token = jwt.sign(
-            {
-                user_id: usuario.user_id,
-                nombre: usuario.nombre,
-                email: usuario.email,
-                isAdmin: usuario.isAdmin,
-                reservas: usuario.reservas
-            },
-            process.env.SECRET_KEY,
-            {
-                expiresIn: 86400 //1 dia en seg
-            }
-        )
-        res.status(200).json({token})
+        const secret = process.env.SECRET_KEY;
+        const payload = {
+            user_id: usuario.user_id,
+            nombre: usuario.nombre,
+            email: usuario.email,
+            isAdmin: usuario.isAdmin,
+            reservas: usuario.reservas,
+            iat: Math.floor(Date.now() / 1000),
+            exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
+        }
+        const token = jwt.sign(payload, secret,{ algorithm: 'HS256' })
+        
+        res.status(200).json({user: {...usuario.toJSON(), password: undefined}, token: token})
     }catch(err){
         console.log(err)
         res.status(400).json({message: "Error al iniciar sesión"})

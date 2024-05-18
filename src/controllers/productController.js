@@ -27,7 +27,7 @@ const obtenerUnicoProducto = async (req,res) => {
 const agregarProducto = async (req, res) => {
   try {
     const { producto, detalle, precio, imagen, categoria } = req.body;
-    const token = req.get("authorization").split(" ")[1];
+    const token = req.get("authorization").split(" ")[1].replace(/['"]+/g,'');
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const { user_id } = decodedToken;
     const usuarioDB = await UserModel.findOne({ user_id });
@@ -60,7 +60,7 @@ const agregarProducto = async (req, res) => {
 const eliminarProducto = async (req, res) => {
   try {
     const { producto_id } = req.params;
-    const token = req.get("authorization").split(" ")[1];
+    const token = req.get("authorization").split(" ")[1].replace(/['"]+/g,'');
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const { user_id } = decodedToken;
     const usuarioDB = await UserModel.findOne({ user_id });
@@ -82,7 +82,7 @@ const actualizarProducto = async (req, res) => {
   try {
     const { producto_id } = req.params;
     const { producto, detalle, precio, imagen, categoria } = req.body;
-    const token = req.get("authorization").split(" ")[1];
+    const token = req.get("authorization").split(" ")[1].replace(/['"]+/g,'');
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const { user_id } = decodedToken;
     const usuarioDB = await UserModel.findOne({ user_id });
